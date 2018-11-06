@@ -1,0 +1,95 @@
+#include <fstream>
+#include <cstring>
+#include <iomanip>
+
+using namespace std;
+
+struct questionFormat
+{
+    string question;
+    string answersA;
+    string answersB;
+    string answersC;
+    string answersD;
+    string answerSheet;
+    string space;
+};
+
+int main ()
+{
+    questionFormat q;
+    string questions [20];
+    string answersA [20];
+    string answersB [20];
+    string answersC [20];
+    string answersD [20];
+    string answerSheet [20];
+    string space[20];
+    int userAnswer [10];
+    int testQuestions [10] = {99,99,99,99,99,99,99,99,99,99};
+    int counter = 0, num = 0, userCorrect =0, correctAnswer = 0;
+    fstream infile("testQuestions.txt", ios::in);
+    srand(time(NULL));
+
+    do
+    {
+        getline (infile, q.question);
+        questions[counter] = q.question;    
+
+        getline (infile, q.answersA);
+        answersA[counter] = q.answersA;
+
+        getline (infile, q.answersB);
+        answersB[counter] = q.answersB;
+
+        getline (infile, q.answersC);
+        answersC[counter] = q.answersC; 
+
+        getline (infile, q.answersD);   
+        answersD[counter] = q.answersD;
+
+        getline (infile, q.answerSheet);
+        answerSheet[counter] = q.answerSheet;
+
+        getline (infile, q.space);
+        space[counter] = q.space;
+
+        counter++;
+    } while (counter < 20);
+
+    cout << "Welcome to my fantastic test.\nYou will randomly be given 10/20 questions." << endl;
+
+    counter = 0;
+
+    while (counter < 10)
+    {
+        num = rand()%20;
+        cout << "Current random number: " << num << endl;
+        cout << "Counter is: " << counter << endl;
+        if (bool exists = find(begin(testQuestions), end(testQuestions), num) != end(testQuestions))
+        {
+            continue;
+        }
+        else
+        {
+            testQuestions[counter] = num;
+            cout << "\nQuestion # " << counter +1 << endl;    
+            cout << questions [num] << endl;
+            cout << answersA [num] << endl;
+            cout << answersB [num] << endl;
+            cout << answersC [num] << endl;
+            cout << answersD [num] << endl;
+            cin >> userAnswer[counter];
+
+            correctAnswer = stoi(answerSheet[num]);
+            if (userAnswer[counter] == correctAnswer)
+            {
+                userCorrect++;
+            }
+            counter++;
+        }
+    }
+    cout << "You got a total of " << userCorrect << " out of 10 correct" << endl;
+
+    return 0;
+}
